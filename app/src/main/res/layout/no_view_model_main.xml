@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".viewmodel.ViewModelActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/no_vm_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/google"
+        android:elevation="4dp"
+        android:theme="@style/ToolbarTheme"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/scoreTextViewNV"
         android:layout_width="wrap_content"
@@ -15,7 +27,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/no_vm_toolbar" />
 
     <Button
         android:id="@+id/addScoreButtonNV"
@@ -44,5 +56,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addScoreButtonNV"
         />
+
 
 </android.support.constraint.ConstraintLayout>

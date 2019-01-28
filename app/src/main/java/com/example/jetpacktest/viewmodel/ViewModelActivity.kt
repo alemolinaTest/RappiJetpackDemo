@@ -11,6 +11,9 @@ import android.widget.Button
 import android.widget.TextView
 
 import com.example.jetpacktest.R
+import com.example.jetpacktest.others.Actions
+import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.no_view_model_main.*
 
 class ViewModelActivity : AppCompatActivity() {
 
@@ -18,8 +21,10 @@ class ViewModelActivity : AppCompatActivity() {
     lateinit var resetScoreButton: Button
     lateinit var scoreTextView: TextView
 
+    private val compositeSubscriptions: CompositeDisposable = CompositeDisposable()
+
     //    Integer score = 0;
-    lateinit var scoreViewModel: ScoreViewModel
+    lateinit var viewModel: ScoreViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,13 +32,16 @@ class ViewModelActivity : AppCompatActivity() {
 
         Log.i(TAG, "onCreate launched" )
 
+        setSupportActionBar(no_vm_toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         scoreTextView = findViewById(R.id.scoreTextView)
         addScoreButton = findViewById(R.id.addScoreButton)
         resetScoreButton = findViewById(R.id.resetScoreButton)
 
-        scoreViewModel = ViewModelProviders.of(this).get(ScoreViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ScoreViewModel::class.java)
 
-        scoreViewModel.scoreData.observe(this, Observer { integer ->
+        viewModel.scoreData.observe(this, Observer { integer ->
            // Log.i(TAG, "Observed ScoreData changed: " + integer.toString())
             scoreTextView.text = integer.toString()
         })
@@ -42,15 +50,39 @@ class ViewModelActivity : AppCompatActivity() {
         addScoreButton.setOnClickListener { addScore() }
         //resetScore button listener
         resetScoreButton.setOnClickListener { resetScore() }
+
+        bindSubscription()
     }
 
     fun addScore() {
-        scoreViewModel.addScore()
+        viewModel.addScore()
     }
 
     fun resetScore() {
-        scoreViewModel.resetScore()
+        viewModel.resetScore()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeSubscriptions.clear()
+    }
+
+    private fun bindSubscription() {
+        compositeSubscriptions.addAll(
+                viewModel.observableActionSubject().subscribe(this::eventListener)
+        )
+    }
+
+    private fun eventListener(actions: Actions) {
+        when (actions) {
+            Actions.OnClickBack -> onBackButtonPressed()
+        }
+    }
+
+    fun onBackButtonPressed(){
+        finishAffinity()
+    }
+
 
     companion object {
 
@@ -60,8 +92,5 @@ class ViewModelActivity : AppCompatActivity() {
             val intent = Intent(context, ViewModelActivity::class.java)
             return intent
         }
-
     }
-
-
 }

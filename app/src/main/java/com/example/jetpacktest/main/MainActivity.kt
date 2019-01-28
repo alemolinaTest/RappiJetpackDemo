@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.example.jetpacktest.R
+import com.example.jetpacktest.livedata.LiveDataActivity
+import com.example.jetpacktest.nolivedata.NoLiveDataActivity
 import com.example.jetpacktest.noviewmodel.NoViewModelActivity
 import com.example.jetpacktest.viewmodel.ViewModelActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -17,12 +19,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        // Get the support action bar
-//        val actionBar = supportActionBar
-//
-//        // Set the action bar title, subtitle and elevation
-//        actionBar!!.title = "JETPACK Rappi Demo"
-//        actionBar.elevation = 4.0F
         setSupportActionBar(mainToolbar)
     }
 
@@ -44,8 +40,16 @@ class MainActivity : AppCompatActivity() {
                 goToViewModelActivity()
                 return true
             }
+            R.id.action_live_data -> {
+                goToNoLiveActivity()
+                return true
+            }
+            R.id.action_data_binding -> {
+                goToLiveActivity()
+                return true
+            }
             R.id.action_room -> {
-                goToRoomActivity()
+
                 return true
             }
         }
@@ -62,8 +66,13 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun goToRoomActivity() {
-        val intent = NoViewModelActivity.newIntent(this)
+    fun goToNoLiveActivity() {
+        val intent = NoLiveDataActivity.newIntent(this)
+        startActivity(intent)
+    }
+
+    fun goToLiveActivity() {
+        val intent = LiveDataActivity.newIntent(this)
         startActivity(intent)
     }
 

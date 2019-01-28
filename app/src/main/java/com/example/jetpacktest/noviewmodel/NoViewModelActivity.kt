@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import com.example.jetpacktest.R
+import com.example.jetpacktest.others.Actions
 
 class NoViewModelActivity : AppCompatActivity() {
 
@@ -44,6 +45,17 @@ class NoViewModelActivity : AppCompatActivity() {
     fun resetScore() {
         src.resetScore()?.let { scoreTextViewNV.text = it.toString() }
     }
+
+    private fun eventListener(actions: Actions) {
+        when (actions) {
+            Actions.OnClickBack -> onBackButtonPressed()
+        }
+    }
+
+    fun onBackButtonPressed(){
+        finishAffinity()
+    }
+
 
     companion object {
 
